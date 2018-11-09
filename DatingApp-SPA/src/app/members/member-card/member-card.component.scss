@@ -1,0 +1,33 @@
+.card:hover{
+  transform: scale(1.15, 1.15);
+  transition: 500ms;
+  transition-timing-function: ease-out;
+  border: 0.1rem solid rgb(61, 24, 129);
+}
+
+.card {
+  transform: scale(1.0, 1.0);
+  transition: 500ms;
+  transition-timing-function: ease-out;
+}
+
+.card-img-wrapper{
+  position: relative;
+}
+
+.member-icons {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: 5%;
+}
+
+.card:hover .member-icons {
+  opacity: 1;
+}
+
+.animate {
+  transition: all 0.3s ease-in;
+}
