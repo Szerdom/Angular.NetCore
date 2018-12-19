@@ -10,7 +10,6 @@ import { User } from '../_models/user';
   providedIn: 'root'
 })
 export class AuthService {
-
   baseUrl = environment.apiUrl + 'auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
@@ -25,19 +24,18 @@ export class AuthService {
   }
 
   login(model: any) {
-    return this.http.post(this.baseUrl + 'login', model)
-      .pipe(
-        map((response: any) => {
-          const user = response;
-          if (user) {
-            localStorage.setItem('token', user.token);
-            localStorage.setItem('user', JSON.stringify(user.user));
-            this.decodedToken = this.jwtHelper.decodeToken(user.token);
-            this.currentUser = user.user;
-            this.changeMemberPhoto(this.currentUser.photoUrl);
-          }
-        })
-      );
+    return this.http.post(this.baseUrl + 'login', model).pipe(
+      map((response: any) => {
+        const user = response;
+        if (user) {
+          localStorage.setItem('token', user.token);
+          localStorage.setItem('user', JSON.stringify(user.user));
+          this.decodedToken = this.jwtHelper.decodeToken(user.token);
+          this.currentUser = user.user;
+          this.changeMemberPhoto(this.currentUser.photoUrl);
+        }
+      })
+    );
   }
 
   register(user: User) {
@@ -47,5 +45,17 @@ export class AuthService {
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  roleMatch(allowedRoles): boolean {
+    let isMatch = false;
+    const userRoles = this.decodedToken.role as Array<string>;
+    allowedRoles.forEach(element => {
+      if (userRoles.includes(element)) {
+        isMatch = true;
+        return;
+      }
+    });
+    return isMatch;
   }
 }
